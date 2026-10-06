@@ -1,54 +1,53 @@
-# FedAvg baseline on Edge-IIoTset (non-IID, Dirichlet)
+# FedAvg on Edge-IIoTset
 
-Reproduces a FedAvg baseline on Edge-IIoTset with Dirichlet label-skew partitioning.
-Reports accuracy, macro-F1, and communication cost per round (MB).
+This is my FedAvg baseline on Edge-IIoTset with non-IID clients (Dirichlet split). I measure accuracy, macro-F1 and how much data is sent per round.
 
 ## Setup
-Tested with Python 3.14, PyTorch, scikit-learn, pandas.
 ```
 python -m venv venv
-venv\Scripts\activate        # Linux/Mac: source venv/bin/activate
+venv\Scripts\activate
 pip install -r requirements.txt
 ```
+I used Python 3.14 on Windows.
 
 ## Data
-Download `DNN-EdgeIIoT-dataset.csv` (folder "Selected dataset for ML and DL") from the
-Edge-IIoTset dataset by M. A. Ferrag on Kaggle and place it in `data/`.
+Download `DNN-EdgeIIoT-dataset.csv` from the Edge-IIoTset dataset on Kaggle and put it in a `data/` folder.
 
-## Run order
+## Run
 ```
-python src/preprocess.py                       # cleans data, 80/20 stratified split (seed 42)
-python src/baseline.py                         # centralized MLP reference
+python src/preprocess.py
+python src/baseline.py
 python src/fedavg.py --alpha 0.5 --rounds 20 --seed 42
 python src/fedavg.py --alpha 0.1 --rounds 20
 python src/fedavg.py --alpha 1.0 --rounds 20
 python src/fedavg.py --alpha 0.5 --rounds 20 --seed 1
 python src/fedavg.py --alpha 0.5 --rounds 20 --seed 2
-python src/report.py                           # table + results.png
-python src/seeds.py                            # mean/std over seeds
+python src/report.py
+python src/seeds.py
 ```
+`src/explore/` has the scripts I used to look at the data first. You don't need them to reproduce the results.
 
-## Setup details
-- Model: MLP 46-128-64-15 (15,247 parameters)
-- 10 clients, all participate every round, 20 rounds
-- Local training: 1 epoch, SGD, lr 0.05, batch 512; server aggregates by sample count
-- Partition: Dirichlet over class labels (alpha = 0.1, 0.5, 1.0)
-- Features: 46 (identifiers, payloads and ports dropped), scaler fitted on train only
-- Communication per round = parameters x 4 bytes x 2 (upload + download) x 10 clients = 1.22 MB
+## What I did
+- Small MLP (46-128-64-15), 15,247 parameters
+- 10 clients, all train every round, 20 rounds, 1 local epoch with SGD
+- The server averages the client models, weighted by how much data each client has
+- 80/20 train/test split, fixed seed
+- Data sent per round: 15,247 parameters x 4 bytes x 2 (down and up) x 10 clients = 1.22 MB
 
-## Results (round 20)
-| Setting | Accuracy | Macro-F1 | MB/round |
+## Results after 20 rounds
+
+| Setting | Accuracy | Macro-F1 | MB per round |
 |---|---|---|---|
-| Centralized (Adam, 5 epochs) | 0.955 | 0.754 | n/a |
-| FedAvg alpha=1.0 (seed 42) | 0.941 | 0.606 | 1.22 |
-| FedAvg alpha=0.5 (3 seeds) | 0.940 ± 0.001 | 0.595 ± 0.005 | 1.22 |
-| FedAvg alpha=0.1 (seed 42) | 0.918 | 0.485 | 1.22 |
+| Centralized (Adam, 5 epochs) | 0.955 | 0.754 | - |
+| FedAvg, alpha 1.0 | 0.941 | 0.606 | 1.22 |
+| FedAvg, alpha 0.5 (3 seeds) | 0.940 ± 0.001 | 0.595 ± 0.005 | 1.22 |
+| FedAvg, alpha 0.1 | 0.918 | 0.485 | 1.22 |
 
 ![results](results.png)
 
-## Notes and limitations
-- "Normal" is 73% of the data, so accuracy is high everywhere; macro-F1 shows the real effect.
-- Lower alpha (more non-IID) reduces macro-F1 clearly (0.60 to 0.48).
-- The centralized reference uses Adam and 5 epochs; FedAvg uses SGD for 20 rounds, so the gap is not only due to federation.
-- Single train/test split; seeds vary the partition, initialization and batch order only.
-- Communication cost is computed analytically, not measured on a network.
+## Things to know
+- 73% of the data is Normal traffic, so accuracy looks good everywhere. Macro-F1 is more useful here.
+- Lower alpha means worse macro-F1. Alpha 0.5 and 1.0 are close.
+- The centralized model uses Adam and FedAvg uses SGD, so they are not a fair comparison.
+- Alpha 0.1 and 1.0 have only one seed.
+- The communication numbers are calculated, not measured.
