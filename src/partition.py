@@ -1,7 +1,7 @@
 import numpy as np
 
 def dirichlet_partition(y, n_clients=10, alpha=0.5, seed=42, min_size=10):
-       """Divide the training data between clients. A lower alpha gives each client fewer classes."""
+    """Divide the training data between clients. A lower alpha gives each client fewer classes."""
     rng = np.random.default_rng(seed)
     n_classes = int(y.max()) + 1
     while True:
