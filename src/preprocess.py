@@ -8,7 +8,6 @@ np.random.seed(SEED)
 
 df = pd.read_csv("data/DNN-EdgeIIoT-dataset.csv", low_memory=False)
 
-# 1. Remove duplicate rows, separate labels from features
 df = df.drop_duplicates()
 y_raw = df["Attack_type"]
 X = df.drop(columns=["Attack_type", "Attack_label"])
