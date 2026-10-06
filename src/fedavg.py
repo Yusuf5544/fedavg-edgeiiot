@@ -50,7 +50,7 @@ def aggregate(states, sizes):
 
 global_model = make_model()
 n_params = sum(p.numel() for p in global_model.parameters())
-# per round: each client downloads and uploads the full model (float32 = 4 bytes)
+# each client downloads and uploads the whole model, 4 bytes per parameter
 comm_mb = n_params * 4 * 2 * a.clients / 1e6
 print(f"Parameters: {n_params}, communication per round: {comm_mb:.3f} MB")
 
