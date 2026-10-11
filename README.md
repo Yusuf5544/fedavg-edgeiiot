@@ -50,4 +50,4 @@ python src/seeds.py
 - Lower alpha means worse macro-F1. Alpha 0.5 and 1.0 are close.
 - The centralized model uses Adam and FedAvg uses SGD, so they are not a fair comparison.
 - Alpha 0.1 and 1.0 have only one seed.
-- The communication numbers are calculated, not measured.
+- The communication numbers are calculated, not measured.                                                                                           

@@ -1,0 +1,62 @@
+Total rows: 2219201
+ALL ROWS attack mix: Normal 72.8%, DDoS_UDP 5.5%, DDoS_ICMP 5.2%, SQL_injection 2.3%, Password 2.3%, Vulnerability_scanner 2.3%, DDoS_TCP 2.3%, DDoS_HTTP 2.2%, Uploading 1.7%, Backdoor 1.1%, Port_Scanning 1.0%, XSS 0.7%, Ransomware 0.5%
+
+=== ip.src_host ===
+Distinct values: 137167
+Groups with at least 1% of rows (not counting 'other'): 4
+
+192.168.0.128: 962133 rows (43.4% of data)
+  Normal 69.4%, DDoS_UDP 11.4%, Password 2.6%, Vulnerability_scanner 2.6%, SQL_injection 2.6%, DDoS_TCP 2.2%, DDoS_ICMP 2.1%, Uploading 1.8%, DDoS_HTTP 1.7%, Backdoor 1.3%, Port_Scanning 1.0%, XSS 0.8%, Ransomware 0.5%
+
+192.168.0.101: 667281 rows (30.1% of data)
+  Normal 100.0%
+
+0: 285604 rows (12.9% of data)
+  Normal 97.9%, Port_Scanning 0.9%, Ransomware 0.4%, MITM 0.3%, Backdoor 0.2%, XSS 0.2%
+
+192.168.0.170: 164982 rows (7.4% of data)
+  DDoS_HTTP 20.2%, SQL_injection 16.0%, Vulnerability_scanner 15.1%, Password 15.0%, Uploading 12.4%, Backdoor 7.2%, Port_Scanning 6.1%, XSS 4.9%, Ransomware 2.9%, Fingerprinting 0.3%
+
+other: 139201 rows (6.3% of data)
+  DDoS_ICMP 69.3%, DDoS_TCP 20.9%, DDoS_UDP 8.3%, Normal 1.1%, MITM 0.1%
+
+=== ip.dst_host ===
+Distinct values: 52425
+Groups with at least 1% of rows (not counting 'other'): 4
+
+192.168.0.128: 958578 rows (43.2% of data)
+  Normal 69.7%, DDoS_ICMP 10.1%, DDoS_HTTP 3.5%, DDoS_TCP 3.0%, SQL_injection 2.8%, Vulnerability_scanner 2.6%, Password 2.6%, Uploading 2.1%, Backdoor 1.2%, Port_Scanning 1.0%, XSS 0.8%, Ransomware 0.5%
+
+192.168.0.101: 665336 rows (30.0% of data)
+  Normal 100.0%
+
+0: 394766 rows (17.8% of data)
+  Normal 70.8%, DDoS_UDP 27.9%, Port_Scanning 0.6%, Ransomware 0.3%, Backdoor 0.2%, XSS 0.1%
+
+192.168.0.170: 143311 rows (6.5% of data)
+  Password 17.6%, Vulnerability_scanner 17.5%, SQL_injection 17.3%, Uploading 11.9%, DDoS_HTTP 11.6%, Backdoor 8.5%, Port_Scanning 7.0%, XSS 4.9%, Ransomware 3.4%, Fingerprinting 0.3%
+
+other: 57210 rows (2.6% of data)
+  DDoS_TCP 36.5%, DDoS_ICMP 34.9%, DDoS_UDP 20.2%, Normal 4.8%, MITM 2.1%, XSS 0.4%, Ransomware 0.3%, Port_Scanning 0.3%, Backdoor 0.2%
+
+=== Protocol fields: top values (to check what 'empty' looks like) ===
+mqtt.msg: {'0': 1532627, '0.0': 603558, '32332e36332037342e35330d0a': 6598, '32332e30362037332e35300d0a': 4364, '32332e38322037342e38370d0a': 3352}
+mqtt.topic: {'0': 1532627, '0.0': 603558, 'Temperature_and_Humidity': 83016}
+http.request.method: {'0.0': 1964275, '0': 222839, 'GET': 30474, 'POST': 1212, 'TRACE': 387}
+dns.qry.name: {'0.0': 2205654, '1.0': 227, '4e-05': 33, '3.9e-05': 32, '3.4e-05': 25}
+
+=== Protocol groups ===
+
+MQTT: 83016 rows (3.7% of data)
+  Normal 100.0%
+
+HTTP: 32087 rows (1.4% of data)
+  Vulnerability_scanner 65.8%, SQL_injection 13.6%, Password 10.3%, Uploading 5.9%, XSS 4.3%
+
+DNS: 13547 rows (0.6% of data)
+  DDoS_UDP 85.1%, Normal 13.2%, MITM 1.7%
+
+None of the three: 2090551 rows (94.2% of data)
+  Normal 73.2%, DDoS_ICMP 5.6%, DDoS_UDP 5.3%, DDoS_TCP 2.4%, DDoS_HTTP 2.4%, Password 2.2%, SQL_injection 2.2%, Uploading 1.7%, Vulnerability_scanner 1.4%, Backdoor 1.2%, Port_Scanning 1.1%, XSS 0.7%, Ransomware 0.5%
+
+Rows in more than one protocol group: 0
